@@ -1,0 +1,78 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    strategy:
+      matrix:
+        arch: [x86_64, arm64]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.2.app || sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+
+      - name: Build for ${{ matrix.arch }}
+        run: |
+          xcodebuild -project GeminiNext.xcodeproj \
+            -scheme GeminiNext \
+            -configuration Release \
+            -arch ${{ matrix.arch }} \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            clean build
+
+      - name: Create DMG
+        run: |
+          APP_PATH="build/Build/Products/Release/GeminiNext.app"
+          DMG_NAME="GeminiNext-${{ github.ref_name }}-${{ matrix.arch }}.dmg"
+
+          # Create a temporary directory for DMG contents
+          mkdir -p dmg_content
+          cp -R "$APP_PATH" dmg_content/
+          ln -s /Applications dmg_content/Applications
+
+          # Create DMG
+          hdiutil create -volname "GeminiNext" \
+            -srcfolder dmg_content \
+            -ov -format UDZO \
+            "$DMG_NAME"
+
+          echo "DMG_NAME=$DMG_NAME" >> $GITHUB_ENV
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GeminiNext-${{ matrix.arch }}
+          path: ${{ env.DMG_NAME }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.dmg
+          generate_release_notes: true
+          draft: false
+          prerelease: false
