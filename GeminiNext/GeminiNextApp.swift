@@ -1,5 +1,6 @@
 import SwiftUI
 import WebKit
+import Sparkle
 
 @main
 struct GeminiNextApp: App {
@@ -18,8 +19,6 @@ struct GeminiNextApp: App {
             CommandGroup(replacing: .saveItem) {
                 Button("Close Window") {
                     if let keyWindow = NSApp.keyWindow {
-                        // The settings window identifier is managed by SwiftUI Settings Scene
-                        // The main window has a windowDelegate (AppDelegate), settings window does not
                         if keyWindow.delegate is AppDelegate {
                             NSApp.hide(nil)
                         } else {
@@ -52,8 +51,7 @@ struct GeminiNextApp: App {
 
         // Standard macOS settings window, opened with Cmd+,
         Settings {
-            SettingsView()
+            SettingsView(updater: appDelegate.updaterController.updater)
         }
     }
 }
-

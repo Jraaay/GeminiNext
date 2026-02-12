@@ -1,7 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-
     "10 minutes" : {
       "localizations" : {
         "zh-Hans" : {
@@ -32,16 +31,7 @@
         }
       }
     },
-    "A new version %@ is available. Would you like to download it?" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "发现新版本 %@，是否前往下载？"
-          }
-        }
-      }
-    },
+
     "About" : {
       "localizations" : {
         "zh-Hans" : {
@@ -112,16 +102,17 @@
         }
       }
     },
-    "Checking..." : {
+    "Check for Updates…" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在检查..."
+            "value" : "检查更新…"
           }
         }
       }
     },
+
     "Close Window" : {
       "localizations" : {
         "zh-Hans" : {
@@ -142,16 +133,7 @@
         }
       }
     },
-    "Download" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "下载"
-          }
-        }
-      }
-    },
+
     "Edit" : {
       "localizations" : {
         "zh-Hans" : {
@@ -232,16 +214,7 @@
         }
       }
     },
-    "Later" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "以后再说"
-          }
-        }
-      }
-    },
+
     "Launch at Login" : {
       "localizations" : {
         "zh-Hans" : {
@@ -322,20 +295,8 @@
         }
       }
     },
-    "Update Available" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "发现新版本"
-          }
-        }
-      }
-    },
-    "User-Agent" : {
 
-    },
-    "v%@" : {
+    "User-Agent" : {
 
     },
     "Version" : {
@@ -358,16 +319,7 @@
         }
       }
     },
-    "You're up to date" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已是最新版本"
-          }
-        }
-      }
-    }
+
   },
   "version" : "1.0"
 }

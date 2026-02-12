@@ -65,16 +65,16 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     }
 }
 
-/// 后台超时时间预设选项
+/// Background timeout preset options
 enum BackgroundTimeoutPreset: String, CaseIterable, Identifiable {
-    case never        = "never"          // 永不超时
-    case tenMinutes   = "10min"          // 10 分钟
-    case thirtyMinutes = "30min"         // 30 分钟
-    case sixtyMinutes = "60min"          // 60 分钟
+    case never        = "never"          // Never timeout
+    case tenMinutes   = "10min"          // 10 minutes
+    case thirtyMinutes = "30min"         // 30 minutes
+    case sixtyMinutes = "60min"          // 60 minutes
 
     var id: String { rawValue }
 
-    /// 显示名称
+    /// Display name
     var displayName: String {
         switch self {
         case .never:         return String(localized: "Never")
@@ -84,7 +84,7 @@ enum BackgroundTimeoutPreset: String, CaseIterable, Identifiable {
         }
     }
 
-    /// 超时秒数；never 返回 nil
+    /// Timeout in seconds; returns nil for never
     var seconds: TimeInterval? {
         switch self {
         case .never:         return nil
@@ -109,7 +109,6 @@ class SettingsManager: ObservableObject {
         static let launchAtLogin = false
         static let alwaysOnTop = false
         static let hotKeyPreset = HotKeyPreset.ctrlGrave
-        static let autoCheckForUpdates = true
     }
 
     // MARK: - Storage Keys
@@ -121,12 +120,11 @@ class SettingsManager: ObservableObject {
         static let alwaysOnTop = "alwaysOnTop"
         static let hotKeyPreset = "hotKeyPreset"
         static let language = "appLanguage"
-        static let autoCheckForUpdates = "autoCheckForUpdates"
     }
 
     // MARK: - Configurable Properties
 
-    /// 后台超时时间预设
+    /// Background timeout preset
     @Published var backgroundTimeout: BackgroundTimeoutPreset {
         didSet { UserDefaults.standard.set(backgroundTimeout.rawValue, forKey: Keys.backgroundTimeout) }
     }
@@ -168,12 +166,6 @@ class SettingsManager: ObservableObject {
         }
     }
 
-    /// 是否在启动时自动检查更新
-    @Published var autoCheckForUpdates: Bool {
-        didSet {
-            UserDefaults.standard.set(autoCheckForUpdates, forKey: Keys.autoCheckForUpdates)
-        }
-    }
 
     // MARK: - Computed Properties
 
@@ -189,7 +181,7 @@ class SettingsManager: ObservableObject {
     private init() {
         let defaults = UserDefaults.standard
 
-        // 读取后台超时预设
+        // Read background timeout preset
         if let timeoutRaw = defaults.string(forKey: Keys.backgroundTimeout),
            let timeout = BackgroundTimeoutPreset(rawValue: timeoutRaw) {
             self.backgroundTimeout = timeout
@@ -213,13 +205,6 @@ class SettingsManager: ObservableObject {
             self.language = lang
         } else {
             self.language = .system
-        }
-
-        // 读取自动检查更新设置（默认开启）
-        if defaults.object(forKey: Keys.autoCheckForUpdates) != nil {
-            self.autoCheckForUpdates = defaults.bool(forKey: Keys.autoCheckForUpdates)
-        } else {
-            self.autoCheckForUpdates = Defaults.autoCheckForUpdates
         }
     }
 

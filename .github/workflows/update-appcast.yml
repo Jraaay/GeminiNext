@@ -1,0 +1,100 @@
+name: Update Appcast
+
+# Only triggered when a Release is officially published (not on drafts)
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  update-appcast:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download release DMGs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p artifacts
+          gh release download "${{ github.event.release.tag_name }}" \
+            --pattern "*.dmg" \
+            --dir artifacts
+          echo "Downloaded DMGs:"
+          ls -la artifacts/
+
+      - name: Generate release notes HTML
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Fetch release body (Markdown) from GitHub API
+          RELEASE_BODY=$(gh api "repos/${{ github.repository }}/releases/tags/${{ github.event.release.tag_name }}" --jq '.body // ""')
+
+          if [ -z "$RELEASE_BODY" ]; then
+            echo "No release notes found, skipping HTML generation"
+          else
+            # Render Markdown to HTML via GitHub API
+            RELEASE_HTML=$(echo "$RELEASE_BODY" | gh api /markdown -F mode=gfm -F "text=@-")
+
+            # Wrap in a basic HTML document
+            RELEASE_HTML_DOC="<html><body>${RELEASE_HTML}</body></html>"
+
+            # Generate an HTML file with the same name as each DMG
+            for dmg in artifacts/*.dmg; do
+              BASENAME=$(basename "$dmg" .dmg)
+              echo "$RELEASE_HTML_DOC" > "artifacts/${BASENAME}.html"
+              echo "Generated release notes: artifacts/${BASENAME}.html"
+            done
+          fi
+
+      - name: Generate Sparkle appcast
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          # Download Sparkle command-line tools
+          SPARKLE_VERSION="2.8.1"
+          curl -sL "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" -o sparkle.tar.xz
+          mkdir -p sparkle_tools
+          tar -xf sparkle.tar.xz -C sparkle_tools
+
+          GENERATE_APPCAST="sparkle_tools/bin/generate_appcast"
+
+          # Fetch existing appcast.xml (if available)
+          git fetch origin gh-pages:gh-pages 2>/dev/null || true
+          mkdir -p gh-pages-content
+          if git show gh-pages:appcast.xml > gh-pages-content/appcast.xml 2>/dev/null; then
+            echo "Found existing appcast.xml"
+          fi
+
+          # Copy DMGs and release notes HTML to working directory
+          cp artifacts/*.dmg gh-pages-content/
+          cp artifacts/*.html gh-pages-content/ 2>/dev/null || true
+
+          # Generate/update appcast.xml
+          DOWNLOAD_URL_PREFIX="https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/"
+          "$GENERATE_APPCAST" gh-pages-content \
+            --download-url-prefix "$DOWNLOAD_URL_PREFIX" \
+            --link "${{ github.event.release.html_url }}" \
+            --ed-key-file <(echo "$SPARKLE_PRIVATE_KEY")
+
+          echo "Generated appcast.xml:"
+          cat gh-pages-content/appcast.xml
+
+      - name: Push appcast to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout --orphan gh-pages-deploy 2>/dev/null || git checkout -B gh-pages-deploy
+          git rm -rf . 2>/dev/null || true
+          cp gh-pages-content/appcast.xml .
+          cp gh-pages-content/*.html . 2>/dev/null || true
+          git add appcast.xml *.html 2>/dev/null || git add appcast.xml
+          git commit -m "chore: update appcast.xml (${{ github.event.release.tag_name }})"
+          git push origin gh-pages-deploy:gh-pages --force

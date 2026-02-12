@@ -134,12 +134,12 @@ class WebViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelega
         }
     }
 
-    /// 应用进入后台时，启动超时定时器（"永不" 时不启动）
+    /// Start the timeout timer when the app enters background (not started when set to "never")
     @objc private func appDidResignActive() {
         backgroundTimer?.invalidate()
         backgroundTimer = nil
 
-        // 选择 "永不" 时不启动定时器
+        // Do not start the timer when "never" is selected
         guard let interval = settings.backgroundTimeout.seconds else { return }
 
         backgroundTimer = Timer.scheduledTimer(

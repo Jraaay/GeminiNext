@@ -63,10 +63,9 @@ Unlike bloated Electron-based apps, GeminiNext is built entirely with native Swi
 
 ### Option 1: Direct Download (Recommended)
 
-Head to [Releases](https://github.com/Jraaay/GeminiNext/releases) and download the installer for your architecture:
+Head to [Releases](https://github.com/Jraaay/GeminiNext/releases) and download the Universal Binary installer:
 
-* **Apple Silicon (M1/M2/M3/M4)** → `GeminiNext-vX.X.X-arm64.dmg`
-* **Intel** → `GeminiNext-vX.X.X-x86_64.dmg`
+* `GeminiNext-vX.X.X.dmg` — supports both Apple Silicon and Intel Macs
 
 ### Option 2: Build from Source
 

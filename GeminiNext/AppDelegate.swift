@@ -1,6 +1,10 @@
 import SwiftUI
+import Sparkle
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+    /// Sparkle updater controller, initialized at app launch
+    let updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Register global hotkeys
         HotKeyManager.shared.register()
@@ -10,10 +14,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             self.configureMainWindow()
             // Restore window always-on-top state
             SettingsManager.shared.updateWindowLevel()
-            // 仅在用户未关闭自动更新时静默检查
-            if SettingsManager.shared.autoCheckForUpdates {
-                UpdateChecker.shared.checkForUpdate(silent: true)
-            }
         }
     }
 
@@ -21,10 +21,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         if flag {
             return true
         } else {
-            // If no visible windows (hidden), try to bring it back
             if let window = sender.windows.first(where: { $0.canBecomeKey }) {
                 window.makeKeyAndOrderFront(nil)
-                return false // Return false to prevent SwiftUI from creating a new window
+                return false
             }
             return true
         }

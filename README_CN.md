@@ -63,10 +63,9 @@
 
 ### 方式一：直接下载 (推荐)
 
-前往 [Releases](https://github.com/Jraaay/GeminiNext/releases) 下载对应架构的安装包：
+前往 [Releases](https://github.com/Jraaay/GeminiNext/releases) 下载通用安装包：
 
-* **Apple Silicon (M1/M2/M3/M4)** → `GeminiNext-vX.X.X-arm64.dmg`
-* **Intel 处理器** → `GeminiNext-vX.X.X-x86_64.dmg`
+* `GeminiNext-vX.X.X.dmg` — 同时支持 Apple Silicon 和 Intel Mac
 
 ### 方式二：从源码构建
 

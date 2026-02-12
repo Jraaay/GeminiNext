@@ -11,40 +11,61 @@ permissions:
 jobs:
   build:
     runs-on: macos-15
-    strategy:
-      matrix:
-        arch: [x86_64, arm64]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify version consistency
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PROJECT_VERSION=$(grep -m1 'MARKETING_VERSION' GeminiNext.xcodeproj/project.pbxproj | sed 's/.*= *\(.*\);/\1/' | tr -d ' ')
+          echo "Tag version: $TAG_VERSION"
+          echo "Project version: $PROJECT_VERSION"
+          if [ "$TAG_VERSION" != "$PROJECT_VERSION" ]; then
+            echo "::error::Version mismatch! Tag=$TAG_VERSION but project.pbxproj=$PROJECT_VERSION"
+            echo "Please run: ./scripts/bump_version.sh $TAG_VERSION"
+            exit 1
+          fi
+
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_26.2.app || sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
 
-      - name: Build for ${{ matrix.arch }}
+      - name: Resolve Swift Package Dependencies
+        run: |
+          xcodebuild -project GeminiNext.xcodeproj \
+            -scheme GeminiNext \
+            -resolvePackageDependencies
+
+      - name: Build Universal Binary
         run: |
           xcodebuild -project GeminiNext.xcodeproj \
             -scheme GeminiNext \
             -configuration Release \
-            -arch ${{ matrix.arch }} \
             -derivedDataPath build \
+            ARCHS="arm64 x86_64" \
+            ONLY_ACTIVE_ARCH=NO \
             CODE_SIGN_IDENTITY="-" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
             clean build
 
       - name: Create DMG
         run: |
           APP_PATH="build/Build/Products/Release/GeminiNext.app"
-          DMG_NAME="GeminiNext-${{ github.ref_name }}-${{ matrix.arch }}.dmg"
+          DMG_NAME="GeminiNext-${{ github.ref_name }}.dmg"
 
-          # Create a temporary directory for DMG contents
+          # Verify universal binary
+          echo "Architectures:"
+          lipo -info "$APP_PATH/Contents/MacOS/GeminiNext"
+
+          # 重新签名整个 app bundle（包括嵌入的 Sparkle.framework），确保 Team ID 一致
+          codesign --deep --force --sign - "$APP_PATH"
+          echo "Code signature verified:"
+          codesign -dvvv "$APP_PATH"
+
           mkdir -p dmg_content
           cp -R "$APP_PATH" dmg_content/
           ln -s /Applications dmg_content/Applications
 
-          # Create DMG
           hdiutil create -volname "GeminiNext" \
             -srcfolder dmg_content \
             -ov -format UDZO \
@@ -55,7 +76,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: GeminiNext-${{ matrix.arch }}
+          name: GeminiNext-universal
           path: ${{ env.DMG_NAME }}
 
   release:
@@ -63,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download all artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
@@ -74,5 +95,5 @@ jobs:
         with:
           files: artifacts/*.dmg
           generate_release_notes: true
-          draft: false
+          draft: true
           prerelease: false

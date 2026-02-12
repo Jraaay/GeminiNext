@@ -1,12 +1,51 @@
 import SwiftUI
+import Sparkle
+import Combine
+
+/// SwiftUI wrapper for Sparkle's "Check for Updates" button
+/// Follows Sparkle's officially recommended SwiftUI integration approach
+struct CheckForUpdatesView: View {
+    @ObservedObject private var checkForUpdatesViewModel: CheckForUpdatesViewModel
+    let updater: SPUUpdater
+
+    init(updater: SPUUpdater) {
+        self.updater = updater
+        self.checkForUpdatesViewModel = CheckForUpdatesViewModel(updater: updater)
+    }
+
+    var body: some View {
+        Button("Check for Updates…") {
+            updater.checkForUpdates()
+        }
+        .disabled(!checkForUpdatesViewModel.canCheckForUpdates)
+    }
+}
+
+/// Observes the Sparkle updater's canCheckForUpdates state
+final class CheckForUpdatesViewModel: ObservableObject {
+    @Published var canCheckForUpdates = false
+    private var cancellable: Any?
+
+    init(updater: SPUUpdater) {
+        // Use KVO to observe canCheckForUpdates property changes
+        cancellable = updater.publisher(for: \.canCheckForUpdates)
+            .assign(to: \.canCheckForUpdates, on: self)
+    }
+}
 
 /// Settings view, displayed using the native macOS Settings Scene
 struct SettingsView: View {
     @ObservedObject private var settings = SettingsManager.shared
-    @ObservedObject private var updateChecker = UpdateChecker.shared
     @FocusState private var isUAFieldFocused: Bool
     @State private var isEditingUA = false
     @State private var showRestartHint = false
+
+    /// Sparkle updater instance, injected from parent
+    private let updater: SPUUpdater
+
+    init(updater: SPUUpdater) {
+        self.updater = updater
+    }
 
     /// Track whether the UA has been customized (differs from default)
     private var isCustomUA: Bool {
@@ -48,7 +87,11 @@ struct SettingsView: View {
                         .foregroundStyle(.orange)
                 }
 
-                Toggle("Auto Check for Updates", isOn: $settings.autoCheckForUpdates)
+                // Auto check for updates toggle, bound directly to Sparkle's automaticallyChecksForUpdates
+                Toggle("Auto Check for Updates", isOn: Binding(
+                    get: { updater.automaticallyChecksForUpdates },
+                    set: { updater.automaticallyChecksForUpdates = $0 }
+                ))
             }
 
             // MARK: - Advanced Settings
@@ -117,33 +160,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Check for Updates")
                     Spacer()
-                    Button {
-                        updateChecker.checkForUpdate(silent: false)
-                    } label: {
-                        switch updateChecker.status {
-                        case .checking:
-                            HStack(spacing: 4) {
-                                ProgressView()
-                                    .controlSize(.small)
-                                Text("Checking...")
-                                    .foregroundStyle(.secondary)
-                            }
-                        case .upToDate:
-                            Text("You're up to date")
-                                .foregroundStyle(.green)
-                        case .available(let version):
-                            Text("v\(version)")
-                                .foregroundStyle(.orange)
-                        case .error(let msg):
-                            Text(msg)
-                                .foregroundStyle(.red)
-                                .lineLimit(1)
-                        case .idle:
-                            Text("Check for Updates")
-                        }
-                    }
-                    .buttonStyle(.borderless)
-                    .disabled(updateChecker.status == .checking)
+                    CheckForUpdatesView(updater: updater)
+                        .buttonStyle(.borderless)
                 }
             }
         }
@@ -170,8 +188,4 @@ struct SettingsView: View {
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
         return "\(version) (\(build))"
     }
-}
-
-#Preview {
-    SettingsView()
 }
