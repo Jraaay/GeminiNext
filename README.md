@@ -50,6 +50,7 @@ Unlike bloated Electron-based apps, GeminiNext is built entirely with native Swi
 ### 🖥️ Deep System Integration
 
 - **Global Hotkey** — Toggle the window with <kbd>Ctrl</kbd> + <kbd>&#96;</kbd> (customizable or disableable).
+- **New Chat Hotkey** — Start a new conversation with <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> (customizable or disableable).
 - **Launch at Login** — Start automatically when you log in.
 - **Persistent Session** — Secure cookie storage means you never need to log in again.
 
@@ -93,27 +94,29 @@ Select your target device in Xcode, then press `Cmd + R` to build and run.
 
 ## ⌨️ Keyboard Shortcuts
 
-| Shortcut                       | Action                                   |
-| ------------------------------ | ---------------------------------------- |
-| <kbd>Ctrl</kbd> + <kbd>`</kbd> | Toggle window (customizable in Settings) |
-| <kbd>Cmd</kbd> + <kbd>R</kbd>  | Reload page                              |
-| <kbd>Cmd</kbd> + <kbd>[</kbd>  | Go back                                  |
-| <kbd>Cmd</kbd> + <kbd>]</kbd>  | Go forward                               |
-| <kbd>Cmd</kbd> + <kbd>W</kbd>  | Hide window                              |
-| <kbd>Cmd</kbd> + <kbd>,</kbd>  | Open Settings                            |
+| Shortcut                                         | Action                                   |
+| ------------------------------------------------ | ---------------------------------------- |
+| <kbd>Ctrl</kbd> + <kbd>`</kbd>                   | Toggle window (customizable in Settings) |
+| <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> | New chat (customizable in Settings)      |
+| <kbd>Cmd</kbd> + <kbd>R</kbd>                    | Reload page                              |
+| <kbd>Cmd</kbd> + <kbd>[</kbd>                    | Go back                                  |
+| <kbd>Cmd</kbd> + <kbd>]</kbd>                    | Go forward                               |
+| <kbd>Cmd</kbd> + <kbd>W</kbd>                    | Hide window                              |
+| <kbd>Cmd</kbd> + <kbd>,</kbd>                    | Open Settings                            |
 
 ## ⚙️ Settings
 
-| Option             | Description                     | Default                        |
-| ------------------ | ------------------------------- | ------------------------------ |
-| Background Timeout | Start a new chat after timeout  | 10 min                         |
-| Launch at Login    | Auto-start on login             | Off                            |
-| Always on Top      | Keep window in front            | Off                            |
-| Window Animation   | Fade transition on show/hide    | On                             |
-| Show/Hide Window   | Toggle window shortcut          | <kbd>Ctrl</kbd> + <kbd>`</kbd> |
-| Language           | UI display language             | System                         |
-| User-Agent         | Custom browser identity         | Safari UA                      |
-| Auto Update Check  | Check for updates automatically | On                             |
+| Option             | Description                     | Default                                          |
+| ------------------ | ------------------------------- | ------------------------------------------------ |
+| Background Timeout | Start a new chat after timeout  | 10 min                                           |
+| Launch at Login    | Auto-start on login             | Off                                              |
+| Always on Top      | Keep window in front            | Off                                              |
+| Window Animation   | Fade transition on show/hide    | On                                               |
+| Show/Hide Window   | Toggle window shortcut          | <kbd>Ctrl</kbd> + <kbd>`</kbd>                   |
+| New Chat           | New chat shortcut               | <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> |
+| Language           | UI display language             | System                                           |
+| User-Agent         | Custom browser identity         | Safari UA                                        |
+| Auto Update Check  | Check for updates automatically | On                                               |
 
 ## 🛠️ Tech Stack
 

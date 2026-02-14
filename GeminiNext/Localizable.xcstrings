@@ -171,16 +171,6 @@
         }
       }
     },
-    "Show/Hide Window" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "显示/隐藏窗口"
-          }
-        }
-      }
-    },
     "Go Back" : {
       "localizations" : {
         "zh-Hans" : {
@@ -251,6 +241,17 @@
         }
       }
     },
+    "New Chat" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新建对话"
+          }
+        }
+      }
+    },
     "None" : {
       "localizations" : {
         "zh-Hans" : {
@@ -307,6 +308,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "恢复默认"
+          }
+        }
+      }
+    },
+    "Show/Hide Window" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示/隐藏窗口"
           }
         }
       }

@@ -16,6 +16,12 @@ struct CustomHotKey: Codable, Equatable {
         modifiers: UInt32(controlKey)
     )
 
+    /// Default new-chat hotkey: Cmd + Shift + N
+    static let newChatDefaultHotKey = CustomHotKey(
+        keyCode: UInt32(kVK_ANSI_N),
+        modifiers: UInt32(cmdKey | shiftKey)
+    )
+
     /// Validation: requires at least one modifier key + one regular key
     var isValid: Bool {
         return modifiers != 0 && keyCode != 0
@@ -187,6 +193,7 @@ class SettingsManager: ObservableObject {
         static let launchAtLogin = false
         static let alwaysOnTop = false
         static let customHotKey: CustomHotKey? = CustomHotKey.defaultHotKey
+        static let newChatHotKey: CustomHotKey? = CustomHotKey.newChatDefaultHotKey
         static let windowAnimation = true
     }
 
@@ -198,6 +205,7 @@ class SettingsManager: ObservableObject {
         static let launchAtLogin = "launchAtLogin"
         static let alwaysOnTop = "alwaysOnTop"
         static let customHotKey = "customHotKey"
+        static let newChatHotKey = "newChatHotKey"
         static let legacyHotKeyPreset = "hotKeyPreset"
         static let language = "appLanguage"
         static let windowAnimation = "windowAnimation"
@@ -241,6 +249,20 @@ class SettingsManager: ObservableObject {
             } else {
                 // Store empty Data to mark "cleared", distinct from "never set"
                 UserDefaults.standard.set(Data(), forKey: Keys.customHotKey)
+            }
+            HotKeyManager.shared.reRegister()
+        }
+    }
+
+    /// New-chat global hotkey (nil means disabled)
+    @Published var newChatHotKey: CustomHotKey? {
+        didSet {
+            if let hotKey = newChatHotKey {
+                if let data = try? JSONEncoder().encode(hotKey) {
+                    UserDefaults.standard.set(data, forKey: Keys.newChatHotKey)
+                }
+            } else {
+                UserDefaults.standard.set(Data(), forKey: Keys.newChatHotKey)
             }
             HotKeyManager.shared.reRegister()
         }
@@ -313,6 +335,19 @@ class SettingsManager: ObservableObject {
             self.language = lang
         } else {
             self.language = .system
+        }
+
+        // Read new-chat hotkey
+        if let data = defaults.data(forKey: Keys.newChatHotKey) {
+            if data.isEmpty {
+                self.newChatHotKey = nil
+            } else if let hotKey = try? JSONDecoder().decode(CustomHotKey.self, from: data) {
+                self.newChatHotKey = hotKey
+            } else {
+                self.newChatHotKey = Defaults.newChatHotKey
+            }
+        } else {
+            self.newChatHotKey = Defaults.newChatHotKey
         }
 
         // windowAnimation defaults to true; only read if user has explicitly set it

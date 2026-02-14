@@ -1,23 +1,27 @@
 import SwiftUI
 import Carbon
 
-/// Hotkey recorder view — allows the user to freely record any modifier + key combination
+/// Reusable hotkey recorder view — allows the user to freely record any modifier + key combination
+/// Used for both the show/hide window hotkey and the new-chat hotkey
 struct HotKeyRecorderView: View {
-    @ObservedObject private var settings = SettingsManager.shared
+    let label: String
+    @Binding var hotKey: CustomHotKey?
+    let defaultHotKey: CustomHotKey
+
     @State private var isRecording = false
     @State private var eventMonitor: Any?
 
     var body: some View {
         HStack {
-            Text("Show/Hide Window")
+            Text(LocalizedStringKey(label))
 
             Spacer()
 
             // Current hotkey / recording prompt
             Text(isRecording
                  ? String(localized: "Press a key combination…")
-                 : (settings.customHotKey?.displayName ?? String(localized: "None")))
-                .foregroundStyle(isRecording ? .orange : (settings.customHotKey == nil ? .secondary : .primary))
+                 : (hotKey?.displayName ?? String(localized: "None")))
+                .foregroundStyle(isRecording ? .orange : (hotKey == nil ? .secondary : .primary))
                 .fontWeight(.medium)
                 .frame(minWidth: 100, alignment: .trailing)
 
@@ -35,17 +39,17 @@ struct HotKeyRecorderView: View {
 
             if !isRecording {
                 // Show "Clear" button when a hotkey is set
-                if settings.customHotKey != nil {
+                if hotKey != nil {
                     Button(String(localized: "Clear")) {
-                        settings.customHotKey = nil
+                        hotKey = nil
                     }
                     .controlSize(.small)
                 }
 
                 // Show "Reset to Default" when value differs from default (including cleared state)
-                if settings.customHotKey != .defaultHotKey {
+                if hotKey != defaultHotKey {
                     Button(String(localized: "Reset to Default")) {
-                        settings.customHotKey = .defaultHotKey
+                        hotKey = defaultHotKey
                     }
                     .controlSize(.small)
                 }
@@ -103,8 +107,8 @@ struct HotKeyRecorderView: View {
 
         guard newHotKey.isValid else { return }
 
-        // Update settings (automatically triggers HotKeyManager.reRegister)
-        settings.customHotKey = newHotKey
+        // Update the binding (automatically triggers HotKeyManager.reRegister via didSet)
+        hotKey = newHotKey
         stopRecording()
     }
 

@@ -1,10 +1,39 @@
 import Cocoa
 import Carbon
 
+/// Hotkey ID constants for distinguishing multiple global hotkeys
+private enum HotKeyIDs {
+    static let showHide: UInt32 = 1
+    static let newChat: UInt32 = 2
+    static let signature: OSType = OSType(0x53574654)
+}
+
 /// Global hotkey callback function conforming to @convention(c)
 private func hotKeyHandler(nextHandler: EventHandlerCallRef?, event: EventRef?, userData: UnsafeMutableRawPointer?) -> OSStatus {
+    guard let event = event else { return OSStatus(eventNotHandledErr) }
+
+    var hotKeyID = EventHotKeyID()
+    let status = GetEventParameter(
+        event,
+        EventParamName(kEventParamDirectObject),
+        EventParamType(typeEventHotKeyID),
+        nil,
+        MemoryLayout<EventHotKeyID>.size,
+        nil,
+        &hotKeyID
+    )
+
+    guard status == noErr else { return status }
+
     DispatchQueue.main.async {
-        HotKeyManager.shared.onHotKeyPressed()
+        switch hotKeyID.id {
+        case HotKeyIDs.showHide:
+            HotKeyManager.shared.onHotKeyPressed()
+        case HotKeyIDs.newChat:
+            HotKeyManager.shared.onNewChatHotKeyPressed()
+        default:
+            break
+        }
     }
     return noErr
 }
@@ -12,6 +41,7 @@ private func hotKeyHandler(nextHandler: EventHandlerCallRef?, event: EventRef?, 
 class HotKeyManager {
     static let shared = HotKeyManager()
     private var hotKeyRef: EventHotKeyRef?
+    private var newChatHotKeyRef: EventHotKeyRef?
     /// Event handler only needs to be installed once
     private var handlerInstalled = false
     /// Prevent repeated triggers during animation
@@ -26,14 +56,17 @@ class HotKeyManager {
     func register() {
         installHandlerIfNeeded()
         registerCurrentHotKey()
+        registerNewChatHotKey()
     }
 
     /// Re-register hotkey (called when settings change)
     /// - Parameter enabled: when false, only unregister without re-registering (recording mode)
     func reRegister(enabled: Bool = true) {
         unregisterHotKey()
+        unregisterNewChatHotKey()
         if enabled {
             registerCurrentHotKey()
+            registerNewChatHotKey()
         }
     }
 
@@ -53,13 +86,13 @@ class HotKeyManager {
         }
     }
 
-    /// Register hotkey based on current settings
+    /// Register show/hide hotkey based on current settings
     private func registerCurrentHotKey() {
         guard let hotKey = SettingsManager.shared.customHotKey else {
             print("Global hotkey disabled, skipping registration")
             return
         }
-        let hotKeyID = EventHotKeyID(signature: OSType(0x53574654), id: 1)
+        let hotKeyID = EventHotKeyID(signature: HotKeyIDs.signature, id: HotKeyIDs.showHide)
         
         let regStatus = RegisterEventHotKey(
             hotKey.keyCode,
@@ -77,11 +110,43 @@ class HotKeyManager {
         }
     }
 
-    /// Unregister the current hotkey
+    /// Register new-chat hotkey based on current settings
+    private func registerNewChatHotKey() {
+        guard let hotKey = SettingsManager.shared.newChatHotKey else {
+            print("New-chat hotkey disabled, skipping registration")
+            return
+        }
+        let hotKeyID = EventHotKeyID(signature: HotKeyIDs.signature, id: HotKeyIDs.newChat)
+
+        let regStatus = RegisterEventHotKey(
+            hotKey.keyCode,
+            hotKey.modifiers,
+            hotKeyID,
+            GetApplicationEventTarget(),
+            0,
+            &newChatHotKeyRef
+        )
+
+        if regStatus != noErr {
+            print("Failed to register new-chat hotkey: \(regStatus)")
+        } else {
+            print("New-chat hotkey \(hotKey.displayName) registered successfully")
+        }
+    }
+
+    /// Unregister the show/hide hotkey
     private func unregisterHotKey() {
         if let ref = hotKeyRef {
             UnregisterEventHotKey(ref)
             hotKeyRef = nil
+        }
+    }
+
+    /// Unregister the new-chat hotkey
+    private func unregisterNewChatHotKey() {
+        if let ref = newChatHotKeyRef {
+            UnregisterEventHotKey(ref)
+            newChatHotKeyRef = nil
         }
     }
     
@@ -101,10 +166,56 @@ class HotKeyManager {
         }
     }
 
+    /// Handle new-chat hotkey: activate window then send Cmd+Shift+O to the web page
+    func onNewChatHotKeyPressed() {
+        guard !isAnimating else { return }
+
+        let hasVisibleWindow = NSApp.windows.contains { $0.isVisible } && NSApp.isActive
+
+        if hasVisibleWindow {
+            // Window is already visible, send the key event directly
+            sendCmdShiftO()
+        } else {
+            // Activate and show window first, then send the key event
+            showWithAnimation {
+                // Delay slightly to ensure the window and WebView are fully ready
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.sendCmdShiftO()
+                }
+            }
+        }
+    }
+
+    /// Send Cmd+Shift+O key event to the key window via CGEvent
+    private func sendCmdShiftO() {
+        guard let window = NSApp.keyWindow ?? NSApp.windows.first(where: { $0.isVisible && $0.canBecomeKey }) else { return }
+        guard let source = CGEventSource(stateID: .combinedSessionState) else { return }
+
+        // kVK_ANSI_O = 0x1F
+        let keyCode: CGKeyCode = CGKeyCode(kVK_ANSI_O)
+
+        // keyDown with Cmd+Shift
+        if let cgDown = CGEvent(keyboardEventSource: source, virtualKey: keyCode, keyDown: true) {
+            cgDown.flags = [.maskCommand, .maskShift]
+            if let nsDown = NSEvent(cgEvent: cgDown) {
+                window.sendEvent(nsDown)
+            }
+        }
+
+        // keyUp
+        if let cgUp = CGEvent(keyboardEventSource: source, virtualKey: keyCode, keyDown: false) {
+            cgUp.flags = [.maskCommand, .maskShift]
+            if let nsUp = NSEvent(cgEvent: cgUp) {
+                window.sendEvent(nsUp)
+            }
+        }
+    }
+
     // MARK: - Animation Methods
 
     /// Show window with fade-in animation
-    private func showWithAnimation() {
+    /// - Parameter completion: optional callback after activation completes
+    private func showWithAnimation(completion: (() -> Void)? = nil) {
         let useAnimation = SettingsManager.shared.windowAnimation
 
         NSApp.activate(ignoringOtherApps: true)
@@ -125,9 +236,11 @@ class HotKeyManager {
                     window.animator().alphaValue = 1.0
                 }, completionHandler: { [weak self] in
                     self?.isAnimating = false
+                    completion?()
                 })
             } else {
                 window.alphaValue = 1.0
+                completion?()
             }
         }
     }

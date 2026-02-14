@@ -68,7 +68,17 @@ struct SettingsView: View {
 
                 Toggle("Window Animation", isOn: $settings.windowAnimation)
 
-                HotKeyRecorderView()
+                HotKeyRecorderView(
+                    label: "Show/Hide Window",
+                    hotKey: $settings.customHotKey,
+                    defaultHotKey: .defaultHotKey
+                )
+
+                HotKeyRecorderView(
+                    label: "New Chat",
+                    hotKey: $settings.newChatHotKey,
+                    defaultHotKey: .newChatDefaultHotKey
+                )
 
                 Picker("Language", selection: $settings.language) {
                     ForEach(AppLanguage.allCases) { lang in
