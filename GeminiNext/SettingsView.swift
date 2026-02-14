@@ -1,6 +1,7 @@
 import SwiftUI
 import Sparkle
 import Combine
+import WebKit
 
 /// SwiftUI wrapper for Sparkle's "Check for Updates" button
 /// Follows Sparkle's officially recommended SwiftUI integration approach
@@ -39,6 +40,9 @@ struct SettingsView: View {
     @FocusState private var isUAFieldFocused: Bool
     @State private var isEditingUA = false
     @State private var showRestartHint = false
+    @State private var showClearDataConfirmation = false
+    @State private var showClearDataSuccess = false
+    @State private var isClearingData = false
 
     /// Sparkle updater instance, injected from parent
     private let updater: SPUUpdater
@@ -154,6 +158,42 @@ struct SettingsView: View {
                             }
                     }
                 }
+
+                // MARK: - Clear Browsing Data
+
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Clear Browsing Data")
+                        Text("Remove cookies, cache and local storage")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    if showClearDataSuccess {
+                        Label("Cleared", systemImage: "checkmark.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.green)
+                            .transition(.opacity)
+                    }
+                    Button(role: .destructive) {
+                        showClearDataConfirmation = true
+                    } label: {
+                        Text("Clear Data")
+                    }
+                    .disabled(isClearingData)
+                }
+                .confirmationDialog(
+                    "Are you sure you want to clear all browsing data?",
+                    isPresented: $showClearDataConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Clear Data", role: .destructive) {
+                        clearBrowsingData()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("This will remove cookies, cache and local storage. You will need to sign in again.")
+                }
             }
 
             // MARK: - About
@@ -174,7 +214,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 430)
+        .frame(width: 450, height: 480)
         .onAppear {
             // Delay one frame to dismiss auto-focus on appearance
             DispatchQueue.main.async {
@@ -195,5 +235,34 @@ struct SettingsView: View {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
         return "\(version) (\(build))"
+    }
+
+    /// Clear all browsing data (cookies, cache, localStorage) and notify WebView to reload
+    private func clearBrowsingData() {
+        isClearingData = true
+        let dataStore = WKWebsiteDataStore.default()
+        let dataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
+
+        dataStore.fetchDataRecords(ofTypes: dataTypes) { records in
+            dataStore.removeData(
+                ofTypes: dataTypes,
+                for: records
+            ) {
+                DispatchQueue.main.async {
+                    isClearingData = false
+                    withAnimation {
+                        showClearDataSuccess = true
+                    }
+                    // Hide success indicator after 3 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        withAnimation {
+                            showClearDataSuccess = false
+                        }
+                    }
+                    // Notify WebViewModel to reload the page
+                    NotificationCenter.default.post(name: .browsingDataCleared, object: nil)
+                }
+            }
+        }
     }
 }

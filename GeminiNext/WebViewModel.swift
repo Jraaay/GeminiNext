@@ -2,6 +2,11 @@ import SwiftUI
 import WebKit
 import Combine
 
+extension Notification.Name {
+    /// Posted after browsing data has been cleared from Settings
+    static let browsingDataCleared = Notification.Name("BrowsingDataCleared")
+}
+
 class WebViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate {
 
     // MARK: - Constants
@@ -97,9 +102,15 @@ class WebViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelega
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(appDidResignActive),
-
             name: NSApplication.didResignActiveNotification,
+            object: nil
+        )
 
+        // Listen for browsing data cleared notification to reload the page
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleBrowsingDataCleared),
+            name: .browsingDataCleared,
             object: nil
         )
     }
@@ -138,6 +149,11 @@ class WebViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelega
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
             self?.focusInput()
         }
+    }
+
+    /// Reload the homepage after browsing data has been cleared
+    @objc private func handleBrowsingDataCleared() {
+        webView.load(URLRequest(url: Constants.geminiURL))
     }
 
     /// Start the timeout timer when the app enters background (not started when set to "never")

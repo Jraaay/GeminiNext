@@ -70,6 +70,7 @@ Unlike bloated Electron-based apps, GeminiNext is built entirely with native Swi
 
 - **Multi-language** — Native multi-language UI that follows your system language.
 - **Custom User-Agent** — Flexible browser identity configuration.
+- **Clear Browsing Data** — One-click removal of cookies, cache and local storage.
 - **Native Rendering** — Powered by the efficient WKWebView engine.
 
 ## 📦 Installation
@@ -106,17 +107,18 @@ Select your target device in Xcode, then press `Cmd + R` to build and run.
 
 ## ⚙️ Settings
 
-| Option             | Description                     | Default                                          |
-| ------------------ | ------------------------------- | ------------------------------------------------ |
-| Background Timeout | Start a new chat after timeout  | 10 min                                           |
-| Launch at Login    | Auto-start on login             | Off                                              |
-| Always on Top      | Keep window in front            | Off                                              |
-| Window Animation   | Fade transition on show/hide    | On                                               |
-| Show/Hide Window   | Toggle window shortcut          | <kbd>Ctrl</kbd> + <kbd>`</kbd>                   |
-| New Chat           | New chat shortcut               | <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> |
-| Language           | UI display language             | System                                           |
-| User-Agent         | Custom browser identity         | Safari UA                                        |
-| Auto Update Check  | Check for updates automatically | On                                               |
+| Option              | Description                      | Default                                          |
+| ------------------- | -------------------------------- | ------------------------------------------------ |
+| Background Timeout  | Start a new chat after timeout   | 10 min                                           |
+| Launch at Login     | Auto-start on login              | Off                                              |
+| Always on Top       | Keep window in front             | Off                                              |
+| Window Animation    | Fade transition on show/hide     | On                                               |
+| Show/Hide Window    | Toggle window shortcut           | <kbd>Ctrl</kbd> + <kbd>`</kbd>                   |
+| New Chat            | New chat shortcut                | <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> |
+| Language            | UI display language              | System                                           |
+| User-Agent          | Custom browser identity          | Safari UA                                        |
+| Clear Browsing Data | Clear cookies, cache and storage | —                                                |
+| Auto Update Check   | Check for updates automatically  | On                                               |
 
 ## 🛠️ Tech Stack
 

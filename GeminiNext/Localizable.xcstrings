@@ -61,6 +61,16 @@
         }
       }
     },
+    "Are you sure you want to clear all browsing data?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定要清除所有浏览数据吗？"
+          }
+        }
+      }
+    },
     "Auto Check for Updates" : {
       "localizations" : {
         "zh-Hans" : {
@@ -77,6 +87,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "后台超时时间"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
           }
         }
       }
@@ -117,6 +137,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "清空"
+          }
+        }
+      }
+    },
+    "Clear Browsing Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除浏览数据"
+          }
+        }
+      }
+    },
+    "Clear Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除数据"
+          }
+        }
+      }
+    },
+    "Cleared" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已清除"
           }
         }
       }
@@ -302,6 +352,16 @@
         }
       }
     },
+    "Remove cookies, cache and local storage" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除 Cookies、缓存和本地存储数据"
+          }
+        }
+      }
+    },
     "Reset to Default" : {
       "localizations" : {
         "zh-Hans" : {
@@ -339,6 +399,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "跟随系统"
+          }
+        }
+      }
+    },
+    "This will remove cookies, cache and local storage. You will need to sign in again." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这将清除 Cookies、缓存和本地存储数据，清除后需要重新登录。"
           }
         }
       }
