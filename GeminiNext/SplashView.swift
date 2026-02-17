@@ -58,7 +58,7 @@ struct SplashView: View {
                 appIcon
 
                 // App title with gradient
-                Text("GeminiNext")
+                Text("Gemini Next Desktop")
                     .font(.system(size: 24, weight: .semibold, design: .rounded))
                     .foregroundStyle(brandGradient)
 

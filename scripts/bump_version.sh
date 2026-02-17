@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# bump_version.sh - GeminiNext Version Auto-Management Script
+# bump_version.sh - Gemini Next Desktop Version Auto-Management Script
 #
 # Usage:
 #   ./scripts/bump_version.sh <version|patch|minor|major>

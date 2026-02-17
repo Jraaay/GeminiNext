@@ -1,7 +1,7 @@
-# GeminiNext
+# Gemini Next Desktop
 
 <div align="center">
-  <img src="resources/logo.svg" alt="GeminiNext Logo" width="120" height="120">
+  <img src="resources/logo.svg" alt="Gemini Next Desktop Logo" width="120" height="120">
 
   <h3>A lighter, cleaner, and more macOS-native unofficial Gemini desktop client</h3>
   
@@ -35,9 +35,9 @@
   <img src="resources/Setting_EN.png" width="600" alt="Settings">
 </div>
 
-## 💡 Why GeminiNext?
+## 💡 Why Gemini Next Desktop?
 
-Unlike bloated Electron-based apps, GeminiNext is built entirely with native SwiftUI. No excessive memory usage, no sluggish startup — just a silky-smooth experience that feels like a built-in macOS app.
+Unlike bloated Electron-based apps, Gemini Next Desktop is built entirely with native SwiftUI. No excessive memory usage, no sluggish startup — just a silky-smooth experience that feels like a built-in macOS app.
 
 ### 🚀 Key Advantages
 
@@ -79,7 +79,7 @@ Unlike bloated Electron-based apps, GeminiNext is built entirely with native Swi
 
 Head to [Releases](https://github.com/Jraaay/GeminiNext/releases) and download the Universal Binary installer:
 
-* `GeminiNext-vX.X.X.dmg` — supports both Apple Silicon and Intel Macs
+* `GeminiNextDesktop-vX.X.X.dmg` — supports both Apple Silicon and Intel Macs
 
 ### Option 2: Build from Source
 

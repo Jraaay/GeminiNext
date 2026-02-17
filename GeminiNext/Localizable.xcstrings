@@ -211,12 +211,12 @@
         }
       }
     },
-    "GeminiNext" : {
+    "Gemini Next Desktop" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GeminiNext"
+            "value" : "Gemini Next Desktop"
           }
         }
       }

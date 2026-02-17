@@ -34,13 +34,13 @@ jobs:
       - name: Resolve Swift Package Dependencies
         run: |
           xcodebuild -project GeminiNext.xcodeproj \
-            -scheme GeminiNext \
+            -scheme "Gemini Next Desktop" \
             -resolvePackageDependencies
 
       - name: Build Universal Binary
         run: |
           xcodebuild -project GeminiNext.xcodeproj \
-            -scheme GeminiNext \
+            -scheme "Gemini Next Desktop" \
             -configuration Release \
             -derivedDataPath build \
             ARCHS="arm64 x86_64" \
@@ -50,12 +50,12 @@ jobs:
 
       - name: Create DMG
         run: |
-          APP_PATH="build/Build/Products/Release/GeminiNext.app"
-          DMG_NAME="GeminiNext-${{ github.ref_name }}.dmg"
+          APP_PATH="build/Build/Products/Release/Gemini Next Desktop.app"
+          DMG_NAME="GeminiNextDesktop-${{ github.ref_name }}.dmg"
 
           # Verify universal binary
           echo "Architectures:"
-          lipo -info "$APP_PATH/Contents/MacOS/GeminiNext"
+          lipo -info "$APP_PATH/Contents/MacOS/Gemini Next Desktop"
 
           # Re-sign the entire app bundle (including embedded Sparkle.framework) to ensure consistent Team ID
           codesign --deep --force --sign - "$APP_PATH"
@@ -66,7 +66,7 @@ jobs:
           cp -R "$APP_PATH" dmg_content/
           ln -s /Applications dmg_content/Applications
 
-          hdiutil create -volname "GeminiNext" \
+          hdiutil create -volname "Gemini Next Desktop" \
             -srcfolder dmg_content \
             -ov -format UDZO \
             "$DMG_NAME"
@@ -76,7 +76,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: GeminiNext-universal
+          name: GeminiNextDesktop-universal
           path: ${{ env.DMG_NAME }}
 
   release:

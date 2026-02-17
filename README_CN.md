@@ -1,7 +1,7 @@
-# GeminiNext
+# Gemini Next Desktop
 
 <div align="center">
-  <img src="resources/logo.svg" alt="GeminiNext Logo" width="120" height="120">
+  <img src="resources/logo.svg" alt="Gemini Next Desktop Logo" width="120" height="120">
 
   <h3>更轻快、更纯净、更懂 macOS 的 Gemini 非官方桌面客户端</h3>
   
@@ -35,9 +35,9 @@
   <img src="resources/Setting_CN.png" width="600" alt="设置界面">
 </div>
 
-## 💡 为什么选择 GeminiNext？
+## 💡 为什么选择 Gemini Next Desktop？
 
-不同于基于 Electron 的庞大应用，GeminiNext 坚持使用原生 SwiftUI 构建。我们拒绝内存占用过高和启动缓慢，致力于提供像系统内置应用一样的丝滑体验。
+不同于基于 Electron 的庞大应用，Gemini Next Desktop 坚持使用原生 SwiftUI 构建。我们拒绝内存占用过高和启动缓慢，致力于提供像系统内置应用一样的丝滑体验。
 
 ### 🚀 核心优势
 
@@ -79,7 +79,7 @@
 
 前往 [Releases](https://github.com/Jraaay/GeminiNext/releases) 下载通用安装包：
 
-* `GeminiNext-vX.X.X.dmg` — 同时支持 Apple Silicon 和 Intel Mac
+* `GeminiNextDesktop-vX.X.X.dmg` — 同时支持 Apple Silicon 和 Intel Mac
 
 ### 方式二：从源码构建
 

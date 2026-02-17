@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		272B660F2F3AFDA200EBF5DA /* GeminiNext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeminiNext.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		272B660F2F3AFDA200EBF5DA /* Gemini Next Desktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gemini Next Desktop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +45,7 @@
 		272B66102F3AFDA200EBF5DA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				272B660F2F3AFDA200EBF5DA /* GeminiNext.app */,
+				272B660F2F3AFDA200EBF5DA /* Gemini Next Desktop.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,12 +68,12 @@
 			fileSystemSynchronizedGroups = (
 				272B66112F3AFDA200EBF5DA /* GeminiNext */,
 			);
-			name = GeminiNext;
+			name = "Gemini Next Desktop";
 			packageProductDependencies = (
 				A1B2C3D42F3B000000000002 /* Sparkle */,
 			);
-			productName = GeminiNext;
-			productReference = 272B660F2F3AFDA200EBF5DA /* GeminiNext.app */;
+			productName = "Gemini Next Desktop";
+			productReference = 272B660F2F3AFDA200EBF5DA /* Gemini Next Desktop.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -288,7 +288,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jraaay.GeminiNext;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Gemini Next Desktop";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -334,7 +334,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jraaay.GeminiNext;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Gemini Next Desktop";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
