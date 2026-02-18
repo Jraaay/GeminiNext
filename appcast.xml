@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>GeminiNext</title>
+        <item>
+            <title>0.3.1</title>
+            <pubDate>Wed, 18 Feb 2026 02:25:31 +0000</pubDate>
+            <link>https://github.com/Jraaay/Gemini-Next-Desktop/releases/tag/v0.3.1</link>
+            <sparkle:version>6</sparkle:version>
+            <sparkle:shortVersionString>0.3.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://gemini-next-desktop-update.jraaay.com/GeminiNextDesktop-v0.3.1.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jraaay/Gemini-Next-Desktop/releases/download/v0.3.1/GeminiNextDesktop-v0.3.1.dmg" length="1633534" type="application/octet-stream" sparkle:edSignature="HbeSbsGS+QQ4DRVRVICV5u06qPSPESNDuh7YL1jV1bsVxDwYiTqBLLJc364LLbDSC16NLKAZlUWgrQ7I0hSLAw=="/>
+        </item>
+        <item>
+            <title>0.2.1</title>
+            <pubDate>Tue, 17 Feb 2026 04:37:28 +0000</pubDate>
+            <link>https://github.com/Jraaay/GeminiNext/releases/tag/v0.2.1</link>
+            <sparkle:version>5</sparkle:version>
+            <sparkle:shortVersionString>0.3.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://jraaay.github.io/GeminiNext/GeminiNextDesktop-v0.3.0.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jraaay/GeminiNext/releases/download/v0.3.0/GeminiNextDesktop-v0.3.0.dmg" length="1633467" type="application/octet-stream" sparkle:edSignature="UK8tLCt5u1HIaLgx0/WvT6vc9xfgAD+SHOpIpeSd8adccl29pk2HIZ1HxljKx8wPnMYiexKULXZvXaRxku98AQ=="/>
+        </item>
+        <item>
+            <title>0.2.0</title>
+            <pubDate>Sat, 14 Feb 2026 04:38:41 +0000</pubDate>
+            <link>https://github.com/Jraaay/GeminiNext/releases/tag/v0.2.0</link>
+            <sparkle:version>4</sparkle:version>
+            <sparkle:shortVersionString>0.2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://jraaay.github.io/GeminiNext/GeminiNext-v0.2.0.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jraaay/GeminiNext/releases/download/v0.2.0/GeminiNext-v0.2.0.dmg" length="1626077" type="application/octet-stream" sparkle:edSignature="97TEDki2tIq/O1bQpnQlURulsbeYek6A8NUbNH/bK26htryErmk+FGQhq8lUmTbjg1/IdbW3PYEzP1qpwfL+Ag=="/>
+        </item>
+    </channel>
+</rss>
