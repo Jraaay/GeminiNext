@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>SUFeedURL</key>
-	<string>https://jraaay.github.io/GeminiNext/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>kT4sbUCRtWnNln5fx9rblzV9B8uj3+BYhjRmduZVQtE=</string>
-</dict>
+	<dict>
+		<key>SUFeedURL</key>
+		<string>https://gemini-next-desktop-update.jraaay.com/appcast.xml</string>
+		<key>SUPublicEDKey</key>
+		<string>kT4sbUCRtWnNln5fx9rblzV9B8uj3+BYhjRmduZVQtE=</string>
+	</dict>
 </plist>
