@@ -1,15 +1,15 @@
-# Gemini Next Desktop
-
 <div align="center">
   <img src="resources/logo.svg" alt="Gemini Next Desktop Logo" width="120" height="120">
+
+  <h1>Gemini Next Desktop</h1>
 
   <h3>A lighter, cleaner, and more macOS-native unofficial Gemini desktop client</h3>
   
   <p>
     <img src="https://img.shields.io/badge/Platform-macOS%2014.0%2B-blue?logo=apple&style=flat-square" alt="Platform">
     <img src="https://img.shields.io/badge/Language-Swift-orange?logo=swift&style=flat-square" alt="Language"> <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
-    <a href="https://github.com/Jraaay/GeminiNext/releases">
-      <img src="https://img.shields.io/github/v/release/Jraaay/GeminiNext?style=flat-square" alt="Release">
+    <a href="https://github.com/Jraaay/Gemini-Next-Desktop/releases">
+      <img src="https://img.shields.io/github/v/release/Jraaay/Gemini-Next-Desktop?style=flat-square" alt="Release">
     </a>
   </p>
 
@@ -19,20 +19,10 @@
   </p>
 </div>
 
-## 🎬 Demo
-
-<div align="center">
-  <img src="resources/demo.gif" width="600" alt="Demo">
-</div>
-
 ## 📸 Screenshots
 
 <div align="center">
-  <p><strong>Main Interface</strong></p>
-  <img src="resources/Main_EN.png" width="600" alt="Main Interface">
-  <br><br>
-  <p><strong>Settings</strong></p>
-  <img src="resources/Setting_EN.png" width="600" alt="Settings">
+  <img src="resources/Main.png" width="600" alt="Main Interface">
 </div>
 
 ## 💡 Why Gemini Next Desktop?
@@ -77,7 +67,7 @@ Unlike bloated Electron-based apps, Gemini Next Desktop is built entirely with n
 
 ### Option 1: Direct Download (Recommended)
 
-Head to [Releases](https://github.com/Jraaay/GeminiNext/releases) and download the Universal Binary installer:
+Head to [Releases](https://github.com/Jraaay/Gemini-Next-Desktop/releases) and download the Universal Binary installer:
 
 * `GeminiNextDesktop-vX.X.X.dmg` — supports both Apple Silicon and Intel Macs
 
@@ -86,7 +76,7 @@ Head to [Releases](https://github.com/Jraaay/GeminiNext/releases) and download t
 To compile from source, make sure your environment meets: **macOS 14.0+** with **Xcode 16.0+** installed.
 
 ```bash
-git clone https://github.com/Jraaay/GeminiNext.git
+git clone https://github.com/Jraaay/Gemini-Next-Desktop.git
 cd GeminiNext
 open GeminiNext.xcodeproj
 ```

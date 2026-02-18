@@ -1,15 +1,14 @@
-# Gemini Next Desktop
-
 <div align="center">
   <img src="resources/logo.svg" alt="Gemini Next Desktop Logo" width="120" height="120">
+  <h1>Gemini Next Desktop</h1>
 
   <h3>更轻快、更纯净、更懂 macOS 的 Gemini 非官方桌面客户端</h3>
   
   <p>
     <img src="https://img.shields.io/badge/Platform-macOS%2014.0%2B-blue?logo=apple&style=flat-square" alt="Platform">
     <img src="https://img.shields.io/badge/Language-Swift-orange?logo=swift&style=flat-square" alt="Language"> <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
-    <a href="https://github.com/Jraaay/GeminiNext/releases">
-      <img src="https://img.shields.io/github/v/release/Jraaay/GeminiNext?style=flat-square" alt="Release">
+    <a href="https://github.com/Jraaay/Gemini-Next-Desktop/releases">
+      <img src="https://img.shields.io/github/v/release/Jraaay/Gemini-Next-Desktop?style=flat-square" alt="Release">
     </a>
   </p>
 
@@ -19,20 +18,10 @@
   </p>
 </div>
 
-## 🎬 演示
-
-<div align="center">
-  <img src="resources/demo.gif" width="600" alt="演示">
-</div>
-
 ## 📸 界面预览
 
 <div align="center">
-  <p><strong>主界面</strong></p>
-  <img src="resources/Main_CN.png" width="600" alt="主界面">
-  <br><br>
-  <p><strong>设置界面</strong></p>
-  <img src="resources/Setting_CN.png" width="600" alt="设置界面">
+  <img src="resources/Main.png" width="600" alt="主界面">
 </div>
 
 ## 💡 为什么选择 Gemini Next Desktop？
@@ -77,7 +66,7 @@
 
 ### 方式一：直接下载 (推荐)
 
-前往 [Releases](https://github.com/Jraaay/GeminiNext/releases) 下载通用安装包：
+前往 [Releases](https://github.com/Jraaay/Gemini-Next-Desktop/releases) 下载通用安装包：
 
 * `GeminiNextDesktop-vX.X.X.dmg` — 同时支持 Apple Silicon 和 Intel Mac
 
@@ -86,7 +75,7 @@
 若要自行编译，请确保开发环境满足：**macOS 14.0+** 且安装了 **Xcode 16.0+**。
 
 ```bash
-git clone https://github.com/Jraaay/GeminiNext.git
+git clone https://github.com/Jraaay/Gemini-Next-Desktop.git
 cd GeminiNext
 open GeminiNext.xcodeproj
 ```
